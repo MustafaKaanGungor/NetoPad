@@ -39,17 +39,6 @@ public class SplashPanel extends JPanel {
     int alpha = 0;
 
     SplashPanel() {
-        
-        this.setBackground(new Color(45,45,45,255));
-        this.setFocusable(true);
-        this.setOpaque(false);
-
-        try {
-            logo = ImageIO.read(new File("Logo.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         start();
     }
 

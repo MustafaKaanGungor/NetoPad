@@ -15,21 +15,21 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
     NetoPad() {
         panel = new SplashPanel();
         
+        this.setTitle("NetoPad - Welcome");
+
         this.setResizable(true);
         this.setSize(1300, 800);
+        this.setLocationRelativeTo(null);
+
         this.setVisible(true);
 
-        
-        
-        this.setTitle("NetoPad - Welcome");
-        this.setLocationRelativeTo(null);
-        
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        
         this.addWindowListener(this);
-        
 
-        
+        //! frame kısmında daha rahat çalışılabilsin diye Splash Panel şuan deaktif. Splash Panel hazır olunca aktif edeceğim - Mustafa
+
+        //TODO: JMenu ile menü ekle
+        //TODO: Text Area ile yazı alanı ekle
     }
 
     @Override
@@ -37,15 +37,17 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
         
     }
 
+    //Window Manager--------------------------------------------
+
     @Override
     public void windowOpened(WindowEvent e) {
-        this.add(panel);
-        panel.updateUI();
+        //this.add(panel);
+        //panel.updateUI();
     }
 
     @Override
     public void windowClosing(WindowEvent e) {
-        
+        //TODO: Dosya kaydedilmiş mi diye kontrol et, kaydedilmemişse uyarı gönder.
     }
 
     @Override
