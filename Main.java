@@ -1,4 +1,7 @@
 public class Main {
-    int babalaraSelam;
-    int ALEYKUMSELAMBABBA;
+
+    public static void main(String[] args) {
+        
+        NetoPad neto = new NetoPad();
+    }
 }
