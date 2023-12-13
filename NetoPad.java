@@ -10,16 +10,22 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NetoPad extends JFrame implements ActionListener, WindowListener {
 
     SplashPanel panel;
+    Timer timer;
     JTextArea textArea;
     JScrollPane scrollPane;
     JSpinner fontSizeSpinner;
+    
+    int seconds = 0;
 
     NetoPad() {
         panel = new SplashPanel();
+        timer = new Timer();
         
         this.setTitle("NetoPad - Welcome");
         try {
@@ -84,8 +90,33 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
 
     @Override
     public void windowOpened(WindowEvent e) {
-        //this.add(panel);
-        //panel.updateUI();
+        this.add(panel);
+        panel.updateUI();
+        TimerTask task;
+        
+        
+        task = new TimerTask() {
+            
+            @Override
+            public void run() {
+                if(seconds < 2){
+                    seconds++;
+                }
+                else if(seconds == 2) {
+                    removePanel();
+                }
+                else {
+                    cancel();
+                }
+            }
+        };
+        
+        timer.schedule(task, 2000, 1000);
+    }
+
+    public void removePanel() {
+        this.remove(panel);
+        this.update(getGraphics());
     }
 
     @Override

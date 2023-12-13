@@ -15,10 +15,11 @@ public class SplashPanel extends JPanel {
     Timer timer = new Timer();
     int seconds = 0;
     int alpha = 250;
+    int colorMask = 0x00FFFFFF;
     
     SplashPanel() {
         
-        this.setBackground(Color.BLACK);
+        this.setBackground(new Color(40,40,40));
         this.setFocusable(true);
         this.setOpaque(true);
         this.setEnabled(true);
@@ -55,8 +56,7 @@ public class SplashPanel extends JPanel {
                 if(seconds < 11){
                     for(int y = 0; y < logo.getHeight(); y++)
                         for(int x = 0; x < logo.getWidth(); x++)
-                            logo.setRGB(x, y, (logo.getRGB(x, y) & 0x00FFFFFF) | (alpha << 24));
-                    System.out.println(alpha);
+                            logo.setRGB(x, y, (logo.getRGB(x, y) & colorMask) | (alpha << 24));
                     alpha -= 25;
                     seconds++;
                 }
@@ -66,6 +66,6 @@ public class SplashPanel extends JPanel {
             }
         };
         
-        timer.schedule(task, 2000, 500000000);
+        timer.schedule(task, 3000, 500000000);
     }
 }
