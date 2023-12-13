@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -7,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
 
 public class NetoPad extends JFrame implements ActionListener, WindowListener {
 
@@ -19,6 +22,11 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
         panel = new SplashPanel();
         
         this.setTitle("NetoPad - Welcome");
+        try {
+            this.setIconImage(ImageIO.read(new File("res/NetoPadIcon.png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         this.setResizable(true);
         this.setSize(1300, 800);

@@ -24,7 +24,7 @@ public class SplashPanel extends JPanel {
         this.setEnabled(true);
         
         try {
-            logo = ImageIO.read(new File("Logo.png"));
+            logo = ImageIO.read(new File("res/NetoPad.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -33,7 +33,7 @@ public class SplashPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        g.drawImage(logo, 100,-100, this);
+        g.drawImage(logo, 100,-150, this);
         g.dispose();
         
         start();
