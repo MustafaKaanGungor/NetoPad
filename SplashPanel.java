@@ -25,7 +25,7 @@ public class SplashPanel extends JPanel {
         this.setEnabled(true);
         
         try {
-            logo = ImageIO.read(new File("res/NetoPad.png"));
+            logo = ImageIO.read(new File("res/NetoPadBG.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
