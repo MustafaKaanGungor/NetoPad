@@ -2,13 +2,16 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,6 +23,27 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
     JTextArea textArea;
     JScrollPane scrollPane;
     JSpinner fontSizeSpinner;
+    JMenuBar menuBar = new JMenuBar();
+    JMenu file = new JMenu("File");
+    JMenu edit = new JMenu("Edit");
+    JMenu help = new JMenu("Help");
+
+    JMenuItem newFile = new JMenuItem("New");
+    JMenuItem openFile = new JMenuItem("Open");
+    JMenuItem saveFile = new JMenuItem("Save");
+    JMenuItem print = new JMenuItem("Print");
+    JMenuItem exit = new JMenuItem("Exit");
+
+    JMenuItem copy = new JMenuItem("Copy");
+    JMenuItem paste = new JMenuItem("Paste");
+    JMenuItem cut = new JMenuItem("Cut");
+    JMenuItem selectall = new JMenuItem("Select All");
+
+    JMenuItem about = new JMenuItem("About");
+
+
+
+
     
     int seconds = 0;
 
@@ -42,7 +66,8 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(this);
 
-        //! frame kısmında daha rahat çalışılabilsin diye Splash Panel şuan deaktif. Splash Panel hazır olunca aktif edeceğim - Mustafa
+        this.setVisible(true);
+
         textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
@@ -52,38 +77,110 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
         scrollPane.setPreferredSize(new Dimension(1200,750));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        /*fontSizeSpinner = new JSpinner();
-        fontSizeSpinner.setPreferredSize(new Dimension(160,20));
-        fontSizeSpinner.setValue(30);
-        fontSizeSpinner.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                int fontSize = (int) fontSizeSpinner.getValue();
-                Font currentFont = textArea.getFont();
-                textArea.setFont(new Font(textArea.getFont().getFamily(),Font.PLAIN,(int) fontSizeSpinner.getValue()));
-                System.out.println("Font size changed to: " + fontSize);
-            }
-        });
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.add(fontSizeSpinner);
-
-        this.setLayout(new BorderLayout());
-        this.add(controlPanel, BorderLayout.NORTH);
-        this.add(scrollPane, BorderLayout.CENTER);
-
-        this.add(fontSizeSpinner); */
-        //TODO: Font size eklemesi başarısız internetten araştır.
         this.add(scrollPane);
 
 
-        this.setVisible(true);
-        //TODO: JMenu ile menü ekle
+/*        fontSizeSpinner = new JSpinner();
+        fontSizeSpinner.setPreferredSize(new Dimension(50,25));
+        fontSizeSpinner.setValue(30);
+        fontSizeSpinner.addChangeListener(new ChangeListener() {
+
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                textArea.setFont(new Font(textArea.getFont().getFamily(),Font.PLAIN,(int) fontSizeSpinner.getValue()));
+            }
+        });
+
+
+        this.add(fontSizeSpinner); */
+        // ----------------------------------------------------MenuBar Section-------------------------------------------------
+        setJMenuBar(menuBar);
+
+        menuBar.add(file);
+        menuBar.add(edit);
+        menuBar.add(help);
+
+        file.add(newFile);
+        file.add(openFile);
+        file.add(saveFile);
+        file.add(print);
+        file.add(exit);
+
+        edit.add(copy);
+        edit.add(paste);
+        edit.add(cut);
+        edit.add(selectall);
+
+        help.add(about);
+
+        newFile.addActionListener(this);
+        openFile.addActionListener(this);
+        saveFile.addActionListener(this);
+        print.addActionListener(this);
+        exit.addActionListener(this);
+        copy.addActionListener(this);
+        paste.addActionListener(this);
+        cut.addActionListener(this);
+        selectall.addActionListener(this);
+        about.addActionListener(this);
+
+        //TODO: Font size eklemesi başarısız internetten araştır.(Not araştırmama rağmen çözüm getiren bir şey bulamadım. Override kısmında bir sıkıntı olabilir.)
+
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        
+            if(e.getActionCommand().equalsIgnoreCase("New")){
+                textArea.setText(null);
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Open")){
+
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Save")){
+
+                JFileChooser fileChooser = new JFileChooser();
+                FileNameExtensionFilter textFilter = new FileNameExtensionFilter("Metin Belgeleri(*.txt)", "txt");
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.addChoosableFileFilter(textFilter);
+
+                int action = fileChooser.showSaveDialog(null);
+                if(action != JFileChooser.APPROVE_OPTION){
+                    return;
+                }
+                else {
+                    String fileName = fileChooser.getSelectedFile().getAbsolutePath().toString();
+                    if (fileName.contains(".txt")) {
+                        fileName = fileName + ".txt";
+                    }
+                    //Unhandled Expection: java.IO.Expection hatası verdi çözümü böyle yapmakta buldum
+                    try {
+                        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                        textArea.write(writer);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+
+                    }
+                }
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Print")){
+
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Exit")){
+
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Copy")){
+
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Paste")){
+
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("Select All")){
+
+            }
+            else if(e.getActionCommand().equalsIgnoreCase("About")){
+
+            }
+
     }
 
     //Window Manager--------------------------------------------
