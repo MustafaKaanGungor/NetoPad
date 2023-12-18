@@ -9,12 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Scanner;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class NetoPad extends JFrame implements ActionListener, WindowListener {
 
@@ -42,15 +41,12 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
     JMenuItem about = new JMenuItem("About");
 
 
-
-
-    
     int seconds = 0;
 
     NetoPad() {
         panel = new SplashPanel();
         timer = new Timer();
-        
+
         this.setTitle("NetoPad - Welcome");
         try {
             this.setIconImage(ImageIO.read(new File("res/NetoPadIcon.png")));
@@ -71,10 +67,10 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
         textArea = new JTextArea();
         textArea.setLineWrap(true);
         textArea.setWrapStyleWord(true);
-        textArea.setFont(new Font("Calibri", Font.PLAIN,30));
+        textArea.setFont(new Font("Calibri", Font.PLAIN, 30));
 
         scrollPane = new JScrollPane((textArea));
-        scrollPane.setPreferredSize(new Dimension(1200,750));
+        scrollPane.setPreferredSize(new Dimension(1200, 750));
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
         this.add(scrollPane);
@@ -130,56 +126,79 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-            if(e.getActionCommand().equalsIgnoreCase("New")){
+        if (e.getActionCommand().equalsIgnoreCase("New")) {
+
+            if (textArea.getText().isEmpty()) {
                 textArea.setText(null);
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Bilgilerinin kaybolmasını istemiyorsan kaydet","Kaydetmeden çıkmak üzeresin", JOptionPane.ERROR_MESSAGE);
             }
-            else if(e.getActionCommand().equalsIgnoreCase("Open")){
 
-            }
-            else if(e.getActionCommand().equalsIgnoreCase("Save")){
+        }
+        // New için yaptığımız gibi ekrandakileri kaydetsin yazıcam ama çok uykum var ve biraz meşakkatli gbi
+        else if (e.getActionCommand().equalsIgnoreCase("Open")) {
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Metin Belgeleri(*.txt)", "txt");
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(filter);
 
-                JFileChooser fileChooser = new JFileChooser();
-                FileNameExtensionFilter textFilter = new FileNameExtensionFilter("Metin Belgeleri(*.txt)", "txt");
-                fileChooser.setAcceptAllFileFilterUsed(false);
-                fileChooser.addChoosableFileFilter(textFilter);
-
-                int action = fileChooser.showSaveDialog(null);
-                if(action != JFileChooser.APPROVE_OPTION){
-                    return;
-                }
-                else {
-                    String fileName = fileChooser.getSelectedFile().getAbsolutePath().toString();
-                    if (fileName.contains(".txt")) {
-                        fileName = fileName + ".txt";
+            int response = fileChooser.showOpenDialog(null);
+            if(response == JFileChooser.APPROVE_OPTION) {
+                File file = new File(fileChooser.getSelectedFile().getAbsolutePath());
+                Scanner fileIn;
+                textArea.setText(null);
+                try {
+                    fileIn = new Scanner(file);
+                    if(file.isFile()){
+                        while (fileIn.hasNextLine()) {
+                            String line = fileIn.nextLine()+"\n";
+                            textArea.append(line);
+                        }
                     }
-                    //Unhandled Expection: java.IO.Expection hatası verdi çözümü böyle yapmakta buldum
-                    try {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-                        textArea.write(writer);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-
-                    }
+                } catch (FileNotFoundException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
-            else if(e.getActionCommand().equalsIgnoreCase("Print")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Save")) {
 
-            }
-            else if(e.getActionCommand().equalsIgnoreCase("Exit")){
+            JFileChooser fileChooser = new JFileChooser();
+            FileNameExtensionFilter textFilter = new FileNameExtensionFilter("Metin Belgeleri(*.txt)", "txt");
+            fileChooser.setAcceptAllFileFilterUsed(false);
+            fileChooser.addChoosableFileFilter(textFilter);
 
-            }
-            else if(e.getActionCommand().equalsIgnoreCase("Copy")){
+            int action = fileChooser.showSaveDialog(null);
+            if (action != JFileChooser.APPROVE_OPTION) {
+                return;
+            } else {
+                String fileName = fileChooser.getSelectedFile().getAbsolutePath().toString();
+                if (fileName.contains(".txt")) {
+                    fileName = fileName + ".txt";
+                }
+                //Unhandled Expection: java.IO.Expection hatası verdi çözümü böyle yapmakta buldum
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+                    textArea.write(writer);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
 
+                }
             }
-            else if(e.getActionCommand().equalsIgnoreCase("Paste")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Print")) {
 
-            }
-            else if(e.getActionCommand().equalsIgnoreCase("Select All")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Exit")) {
+            System.exit(0);
 
-            }
-            else if(e.getActionCommand().equalsIgnoreCase("About")){
+        } else if (e.getActionCommand().equalsIgnoreCase("Copy")) {
 
-            }
+        } else if (e.getActionCommand().equalsIgnoreCase("Paste")) {
+
+        } else if (e.getActionCommand().equalsIgnoreCase("Select All")) {
+
+        } else if (e.getActionCommand().equalsIgnoreCase("About")) {
+            JOptionPane.showMessageDialog(null,"Merhaba, burası yardım isteyebileceğin bir yer değil.","Günlerden biri", JOptionPane.DEFAULT_OPTION);
+
+        }
 
     }
 
@@ -190,24 +209,22 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
         this.add(panel);
         panel.updateUI();
         TimerTask task;
-        
-        
+
+
         task = new TimerTask() {
-            
+
             @Override
             public void run() {
-                if(seconds < 2){
+                if (seconds < 2) {
                     seconds++;
-                }
-                else if(seconds == 2) {
+                } else if (seconds == 2) {
                     removePanel();
-                }
-                else {
+                } else {
                     cancel();
                 }
             }
         };
-        
+
         timer.schedule(task, 2000, 1000);
     }
 
@@ -223,27 +240,27 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
 
     @Override
     public void windowClosed(WindowEvent e) {
-        
+
     }
 
     @Override
     public void windowIconified(WindowEvent e) {
-        
+
     }
 
     @Override
     public void windowDeiconified(WindowEvent e) {
-        
+
     }
 
     @Override
     public void windowActivated(WindowEvent e) {
-        
+
     }
 
     @Override
     public void windowDeactivated(WindowEvent e) {
-        
+
     }
 
 }

@@ -69,3 +69,4 @@ public class SplashPanel extends JPanel {
         timer.schedule(task, 3000, 500000000);
     }
 }
+
