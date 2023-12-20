@@ -1,18 +1,15 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
+import java.util.*;
 import java.util.Scanner;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class NetoPad extends JFrame implements ActionListener, WindowListener {
@@ -172,7 +169,7 @@ public class NetoPad extends JFrame implements ActionListener, WindowListener {
                 return;
             } else {
                 String fileName = fileChooser.getSelectedFile().getAbsolutePath().toString();
-                if (fileName.contains(".txt")) {
+                if (!fileName.contains(".txt")) {
                     fileName = fileName + ".txt";
                 }
                 //Unhandled Expection: java.IO.Expection hatası verdi çözümü böyle yapmakta buldum
